@@ -1,0 +1,6 @@
+{
+    "[python]": {
+        "editor.wordBasedSuggestions": false
+    },
+    "python.formatting.provider": "black"
+}

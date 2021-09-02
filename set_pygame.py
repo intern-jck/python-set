@@ -14,8 +14,7 @@ set_display = pygame.display.set_mode((400,400))
 set_display.fill(white)
 
 
-
-
+#Test all the shape designs
 def test_all_shapes():
         
     #Empty
@@ -56,26 +55,21 @@ def test_all_shapes():
     pygame.draw.polygon(set_display, blue, ((250,300), (300,300), (275,250)), width=0)
 
 #Functions for shapes
-
 def empty_square(x, y):
     pygame.draw.rect(set_display, red, (x,y,50,50), width=1)
-
 def empty_circle(x, y):
     pygame.draw.circle(set_display, green, (x, y), 25, width=1)
-
 def empty_trianlge(x, y):
     x_1, y_1 = x ,y
     x_2, y_2 = x + 50, y
     x_3, y_3= x + 25, y - 50
     pygame.draw.polygon(set_display, blue, ((x_1, y_1), (x_2,y_2), (x_3,y_3)), width=1)
 
-
 def shaded_square(x, y):
     pygame.draw.rect(set_display, red, (100,175,50,50), width=1)
     pygame.draw.line(set_display, red, (112,175), (112,225), width=1)
     pygame.draw.line(set_display, red, (125,175), (125,225), width=1)
     pygame.draw.line(set_display, red, (137,175), (137,225), width=1)
-
 def shaded_circle(x , y):
     circle_x, circle_y = x, y
     radius= 25
@@ -83,7 +77,6 @@ def shaded_circle(x , y):
     pygame.draw.line(set_display, green, (circle_x-radius/2, circle_y-radius*0.75), (circle_x-radius/2,circle_y+radius*0.75), width=1)
     pygame.draw.line(set_display, green, (circle_x, circle_y-radius), (circle_x,circle_y+radius), width=1)
     pygame.draw.line(set_display, green, (circle_x+radius/2, circle_y+radius*0.75), (circle_x+radius/2,circle_y-radius*0.75), width=1)
-
 def shaded_triangle(x, y):
     x_1, y_1 = x ,y
     x_2, y_2 = x + 50, y
@@ -93,18 +86,19 @@ def shaded_triangle(x, y):
     pygame.draw.line(set_display, blue, (x_1+25, y_1), (x_1+25,y_1 - 50), width=1)
     pygame.draw.line(set_display, blue, (x_1+37, y_1), (x_1 + 37,y_1 - 25), width=1)    
 
-
 def filled_square(x, y):    
     pygame.draw.rect(set_display, red, (x,y,50,50), width=0)
-
 def filled_circle(x, y):
     pygame.draw.circle(set_display, green, (x, y), 25, width=0)
-
 def filled_triangle(x, y):
     x_1, y_1 = x ,y
     x_2, y_2 = x + 50, y
     x_3, y_3= x + 25, y - 50
     pygame.draw.polygon(set_display, blue, ((x_1,y_1), (x_2,y_2), (x_3,y_3)), width=0)
+
+
+
+
 
 
 
