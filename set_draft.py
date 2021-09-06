@@ -10,33 +10,40 @@ import random
 from functools import partial
 import re
 
+# Tkinter setup
 set_root = tk.Tk()
 set_root.title("Set Game")
 set_root.geometry("800x500")
 set_root.config(bg="grey")
 
+# Make a grid of 3 rows by 5 cols to place cards
 GAME_ROW = 3
 GAME_COL = 5
+# 81 Total cards in the deck
 MAX_CARDS = 81
+# Used to check if card can be placed on table
+###NIU at the moment
+card_grid = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+]
 
 
-# button_image = tk.PhotoImage(file=".\SetCards\Set Card_0.png")
-
+# Use images of each card for buttons
 # Get path names for card images
 card_image_paths = glob.glob("SetCards\*.png")
 card_image_paths = sorted(card_image_paths, key=lambda n: int(re.findall(r"\d+", n)[0]))
 
-for path in card_image_paths:
-    print(path)
-
-card_images = []
 # Save them to access later
+card_images = []
 for i in range(MAX_CARDS):
     card_image = tk.PhotoImage(file=card_image_paths[i])
     card_images.append(card_image)
 
 
 # Each card can be represented by its ternary value
+# This makes a ternary representation for each card
 def ternary(n):
     # Simple case
     if n == 0:
@@ -59,76 +66,60 @@ def ternary(n):
         return "" + num
 
 
+# Save the values for each card
 card_values = [[0, 0, 0, 0] for i in range(MAX_CARDS)]
 # Fill in all the values for cards
 for i in range(MAX_CARDS):
-    # print(ternary(i))
     for j in range(len(card_values[i])):
         card_values[i][j] = int(ternary(i)[j])
 
-    # print("{}: {}".format(i, card_values[i]))
-
-# Used to check if card has been drawn
+# Keep track of cards drawn and selected
 card_drawn = [False for i in range(MAX_CARDS)]
 card_selected = [False for i in range(MAX_CARDS)]
 
-# Used to check if card can be placed on table
-card_grid = [
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-]
-
-
-# card_set = [[] for i in range(3)]
 card_set = []
 
 
-def card_click(num):
-
-    card_selected[num] = not card_selected[num]
-
-    if card_selected[num] == True:
-        # card_set.append(num)
-        card_deck[num].config(bg="red")
-        print("{}: {}".format(num, card_values[num]))
-    elif card_selected[num] == False:
-        # index = card_set.index(num)
-        # card_set.pop(index)
-        card_deck[num].config(bg="black")
-
-
-card_deck = [0 for i in range(MAX_CARDS)]
+card_buttons = [0 for i in range(MAX_CARDS)]
 
 
 def new_game():
     print("New Game")
+    card_deck = [i for i in range(MAX_CARDS)]
 
     # Clear everything
     # clear_table()
     for i in range(len(card_set)):
         card_set.pop(i)
 
-    for i in range(MAX_CARDS):
-        card_drawn[i] = False
+    # for i in range(MAX_CARDS):
+    #     card_drawn[i] = False
+
     # Layout cards
     for i in range(MAX_CARDS):
         card = tk.Button(
             set_root,
             image=card_images[i],
             bg="black",
-            activebackground="red",
             command=partial(card_click, i),
         )
-        card_deck[i] = card
+        card_buttons[i] = card
 
-    for i in range(GAME_ROW):
-        for j in range(GAME_COL - 1):
-            card_num = random.randrange(MAX_CARDS)
+    for i in range(3):
+        for j in range(4):
 
-            if card_drawn[card_num] == False:
-                card_deck[card_num].place(x=40 + j * 100, y=40 + i * 140)
-                card_drawn[card_num] = True
+            # card_num = random.randrange(MAX_CARDS)
+            card_num = random.randrange(len(card_deck))
+            card_placed = card_deck[card_num]
+
+            print(card_num, " ", end="")
+
+            if card_drawn[card_placed] == False:
+                card_buttons[card_placed].place(x=40 + j * 100, y=40 + i * 140)
+                card_drawn[card_placed] = True
+                index = card_deck.index(card_placed)
+                card_deck.pop(index)
+        print()
 
 
 def clear_table():
@@ -141,35 +132,56 @@ def clear_table():
         card_drawn[i] = False
 
 
+def card_click(num):
+
+    card_selected[num] = not card_selected[num]
+
+    if card_selected[num] == True:
+
+        if len(card_set) < 3:
+            card_set.append(num)
+            card_buttons[num].config(bg="red")
+            print(card_set)
+            # print("{}: {}".format(num, card_values[num]))
+
+    elif card_selected[num] == False:
+        if num in card_set:
+            index = card_set.index(num)
+            card_set.pop(index)
+            print(len(card_set))
+            card_buttons[num].config(bg="black")
+        print(card_set)
+
+
 def draw_three():
     print("Draw Three More")
     for i in range(3):
-        card_deck[i].place(x=440, y=40 + i * 140)
+        card_buttons[i].place(x=440, y=40 + i * 140)
 
 
 def check_set():
     if len(card_set) == 3:
-        for card in card_set:
-            print(card)
+        card_1 = card_values[card_set[0]]
+        card_2 = card_values[card_set[1]]
+        card_3 = card_values[card_set[2]]
+
         if (
-            (
-                card_set[0][0] == card_set[1][0] == card_set[2][0]
-                or card_set[0][0] != card_set[1][0] != card_set[2][0]
+            (card_1[0] == card_2[0] == card_3[0] or card_1[0] != card_2[0] != card_3[0])
+            and (
+                card_1[1] == card_2[1] == card_3[1]
+                or card_1[1] != card_2[1] != card_3[1]
             )
             and (
-                card_set[0][1] == card_set[1][1] == card_set[2][1]
-                or card_set[0][1] != card_set[1][1] != card_set[2][1]
+                card_1[2] == card_2[2] == card_3[2]
+                or card_1[2] != card_2[2] != card_3[2]
             )
             and (
-                card_set[0][2] == card_set[1][2] == card_set[2][2]
-                or card_set[0][2] != card_set[1][2] != card_set[2][2]
-            )
-            and (
-                card_set[0][3] == card_set[1][3] == card_set[2][3]
-                or card_set[0][3] != card_set[1][3] != card_set[2][3]
+                card_1[3] == card_2[3] == card_3[3]
+                or card_1[3] != card_2[3] != card_3[3]
             )
         ):
             print("Set Found!")
+
         else:
             print("NOT A SET!!!")
 
