@@ -42,7 +42,7 @@ for i in range(MAX_CARDS):
     card_images.append(card_image)
 
 
-# Each card can be represented by its ternary value
+# Each card can be represented by a ternary number
 # This makes a ternary representation for each card
 def ternary(n):
     # Simple case
@@ -66,24 +66,57 @@ def ternary(n):
         return "" + num
 
 
+def ternary_list(n):
+    # Simple case
+    if n == 0:
+        return [0, 0, 0, 0]
+    # Build string
+    num = []
+    while n:
+        n, r = divmod(n, 3)
+        num.append(r)
+    # Reverse String
+    num = num[::-1]
+    # return num
+    # # Padd with leading zeros if needed
+    if len(num) == 1:
+        num.insert(0, 0)
+        num.insert(0, 0)
+        num.insert(0, 0)
+        return num
+    elif len(num) == 2:
+        num.insert(0, 0)
+        num.insert(0, 0)
+        return num
+    elif len(num) == 3:
+        num.insert(0, 0)
+        return num
+    elif len(num) == 4:
+        return num
+
+
 # Save the values for each card
 card_values = [[0, 0, 0, 0] for i in range(MAX_CARDS)]
+card_values2 = [[0, 0, 0, 0] for i in range(MAX_CARDS)]
+
+
 # Fill in all the values for cards
 for i in range(MAX_CARDS):
-    for j in range(len(card_values[i])):
-        card_values[i][j] = int(ternary(i)[j])
+    # for j in range(len(card_values[i])):
+    # card_ternary = ternary_list(i)
+    # card_values[i][j] = int(card_ternary[j])
+    print(i, ternary_list(i))
+
 
 # Keep track of cards drawn and selected
 card_drawn = [False for i in range(MAX_CARDS)]
 card_selected = [False for i in range(MAX_CARDS)]
-
 card_set = []
-
-
 card_buttons = [0 for i in range(MAX_CARDS)]
 
 
 def new_game():
+
     print("New Game")
     card_deck = [i for i in range(MAX_CARDS)]
 
@@ -94,7 +127,6 @@ def new_game():
 
     # for i in range(MAX_CARDS):
     #     card_drawn[i] = False
-
     # Layout cards
     for i in range(MAX_CARDS):
         card = tk.Button(
@@ -107,13 +139,10 @@ def new_game():
 
     for i in range(3):
         for j in range(4):
-
             # card_num = random.randrange(MAX_CARDS)
             card_num = random.randrange(len(card_deck))
             card_placed = card_deck[card_num]
-
             print(card_num, " ", end="")
-
             if card_drawn[card_placed] == False:
                 card_buttons[card_placed].place(x=40 + j * 100, y=40 + i * 140)
                 card_drawn[card_placed] = True
@@ -121,20 +150,26 @@ def new_game():
                 card_deck.pop(index)
         print()
 
+    print("Cards Left: {}".format(MAX_CARDS - sum(card_drawn)))
+
 
 def clear_table():
 
     print("Clear Table")
-    for i in range(len(card_set)):
-        card_set.pop(i)
+    if card_set != None:
+        for i in range(len(card_set)):
+            card_set.pop(i)
 
-    for i in range(MAX_CARDS):
-        card_drawn[i] = False
+    if sum(card_drawn) != 0:
+        for i in range(MAX_CARDS):
+            card_drawn[i] = False
+            card_buttons[i].place_forget()
 
 
 def card_click(num):
 
     card_selected[num] = not card_selected[num]
+    # print(card_buttons[num].winfo_rootx(), card_buttons[num].winfo_rooty())
 
     if card_selected[num] == True:
 
@@ -159,6 +194,12 @@ def draw_three():
         card_buttons[i].place(x=440, y=40 + i * 140)
 
 
+# def pick_card(cards_to_pick):
+
+#     card_total = len(cards_to_pick)
+#     card_picked = cards_to_pick[randrange(card_total)]
+
+
 def check_set():
     if len(card_set) == 3:
         card_1 = card_values[card_set[0]]
@@ -180,7 +221,15 @@ def check_set():
                 or card_1[3] != card_2[3] != card_3[3]
             )
         ):
-            print("Set Found!")
+            print("Set Found!: {}".format(card_set))
+            # Remove these cards from table
+            card_buttons[card_set[0]].place_forget()
+            card_buttons[card_set[1]].place_forget()
+            card_buttons[card_set[2]].place_forget()
+
+            # for i in
+            # replace cards here
+            # update cards drawn and cards left
 
         else:
             print("NOT A SET!!!")
