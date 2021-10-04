@@ -26,7 +26,6 @@ cards_left = tk.StringVar()
 cards_left.set(game.cards_left())
 
 cards_left_label = tk.Label(table, textvariable=cards_left, relief="raised")
-
 cards_left_label.place(x=600, y=50)
 
 new_game_button.place(x=700, y=100)

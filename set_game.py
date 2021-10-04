@@ -5,30 +5,30 @@ import random
 import re
 import glob
 
-# Set Game
-
 
 class Set_Game:
 
-    # Tkinter setup
-    # The tk window will be our "table" for the card card
-    # table = tk.Tk()
-    # table.title("Set Game")
-    # table.geometry("800x500")
-    # table.config(bg="grey")
-
     # Number of cards in deck
     MAX_CARDS = 81
-    # Keep track of th cards left in the deck.  When deck = 0, game is over
     card_deck = [i for i in range(MAX_CARDS)]
-    # Value for each card, [0,0,0,0] ==> [Red, 1, Empty, Triangle]
+
+    # Each card is represented by a set of 0, 1, or 2
+    # [0,0,0,0] ==> [Color, Amount, Texture, Shape]
+
+    #  Value   #    0           1           2
+    ##############################################
+    #  Color   #   Red         Green       Blue
+    #  Texture #   Empty      Stripes     Filled
+    #  Amount  #    1           2           3
+    #  Shape   #  Triangle    Square      Circle
+
+    # [0,2,1,1] => A card with Red Filled 2 Squares
+
     CARD_VALUES = [[0, 0, 0, 0] for i in range(MAX_CARDS)]
+
     # Each card is represented by a Tkinter button
     CARD_BUTTONS = [0 for i in range(MAX_CARDS)]
     card_pos = [[0, 0] for i in range(MAX_CARDS)]
-    # Keep track of cards drawn
-    # not sure if needed
-    # cards_drawn = [False for i in range(MAX_CARDS)]
 
     # Keep track of which cards are selected on table
     card_selected = [False for i in range(MAX_CARDS)]
