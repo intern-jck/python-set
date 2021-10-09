@@ -1,0 +1,4 @@
+Bugs
+
+
+- If card is clicked after card set is formed, card needs double click to be added to set
