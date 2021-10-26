@@ -28,6 +28,11 @@ check_set_button = tk.Button(
 easy_game_button = tk.Button(
     table, text="Easy Game", font=button_font, command=game.easy_game
 )
+cards_left = tk.StringVar()
+cards_left.set(game.cards_left())
+
+cards_left_label = tk.Label(table, textvariable=cards_left, relief="raised")
+cards_left_label.place(x=600, y=50)
 
 new_game_button.place(x=700, y=100)
 draw_three_button.place(x=700, y=150)
