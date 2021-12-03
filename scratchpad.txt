@@ -1,0 +1,38 @@
+# # Game Modes
+# # An easy game is a regular game with an unshuffled deck
+# # With all cards in order, every three cards laid out will be a Set
+# def easy_game(self):
+
+#     # Create a deck
+#     self.card_deck = [i for i in range(self.DECK_SIZE)]
+#     print(self.card_deck)
+
+#     # Clear out the Set if any left from previous game
+#     for i in range(len(self.card_set)):
+#         self.card_set.pop(0)
+
+#     # Lay 12 cards out on the table to form a grid with 3 rows, 4 columns
+#     for i in range(3):
+#         for j in range(4):
+
+#             # Pick a card from the deck
+#             new_card = self.draw_card()
+
+#             # Place it into the frame
+#             self.CARD_BUTTONS[new_card].grid(row=i, column=j, padx=10, pady=10)
+
+#             # Keep track of available spots on table
+#             self.card_table[i][j] = self.alt_card_deck[new_card]
+
+#             print(" {}, ".format(self.card_table[i][j]), end=" ")
+
+#         print()
+#     print("Cards Left: {}".format(self.cards_left()))
+
+
+# def sort_table(self):
+#     current_table = []
+#     for i in self.CARD_TABLE_ROWS:
+#         for j in self.CARD_TABLE_COLS:
+#             if self.card_table[i][j] == 1:
+#                 cuurent_table.append(self)
